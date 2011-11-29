@@ -1,4 +1,4 @@
-<QuestionForm xmlns="[the QuestionForm schema URL]">
+<QuestionForm xmlns = "http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2005-10-01/QuestionForm.xsd">
   <Overview>
     <Title>Question {{question_id}}</Title>
     <Text>
@@ -7,12 +7,12 @@
   </Overview>
   <Question>
     <QuestionIdentifier>age</QuestionIdentifier>
+    <IsRequired>true</IsRequired>
     <QuestionContent>
       <Text>
         How old are you?
       </Text>
     </QuestionContent>
-    <IsRequired>true</IsRequired>
     <AnswerSpecification>
       <FreeTextAnswer>
         <Constraints>
@@ -51,12 +51,12 @@
   </Question>
   <Question>
     <QuestionIdentifier>age</QuestionIdentifier>
+    <IsRequired>true</IsRequired>
     <QuestionContent>
       <Text>
         What is your favourite type of {{food}}?
       </Text>
     </QuestionContent>
-    <IsRequired>true</IsRequired>
     <AnswerSpecification>
       <FreeTextAnswer>
       </FreeTextAnswer>
