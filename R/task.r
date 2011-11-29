@@ -1,5 +1,3 @@
-# Functions for working with tasks
-
 #' Coerce input to a task.
 #' 
 #' Possibile specifications of task:
@@ -9,6 +7,7 @@
 #'   \item task object
 #' }
 #' @param x object to coerce to a task
+#' @keywords internal
 #' @export
 as.task <- function(x = NULL) {
   if (is.null(x)) {
@@ -25,6 +24,11 @@ as.task <- function(x = NULL) {
   set_last_task(pkg)
 }
 
+#' Is the object a task?
+#' @keywords internal
+#' @export
+is.task <- function(x) inherits(x, "task")
+
 get_last_task <- NULL
 set_last_task <- NULL
 local({
@@ -40,9 +44,7 @@ local({
 
 })
 
-
-#' Load task DESCRIPTION into convenient form.
-#' @keywords internal
+# Load task DESCRIPTION into convenient form.
 load_task <- function(path) {
   path <- normalizePath(path)
   path_desc <- file.path(path, "DESCRIPTION")
@@ -73,10 +75,4 @@ save_task <- function(task) {
   
   write.dcf(path, x)
 }
-
-#' Is the object a task?
-#' @keywords internal
-#' @export
-is.task <- function(x) inherits(x, "task")
-
 
