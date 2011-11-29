@@ -1,0 +1,10 @@
+Title: Task title
+AccessKey: My access key
+Description: This is a paragraph length description of the task that workers
+  will read before looking at the task. Note that lines in this paragraph 
+  are indented by any consistent number of spaces or tabs.
+Keywords: comma, separated, keywords
+Reward: 0.01 USD
+TimeLimits: 30 days
+MaxAssignments: 1
+Qualifications:

@@ -1,6 +1,7 @@
 export(as.task)
 export(get_balance)
 export(is.task)
+export(task_skeleton)
 importFrom(digest,hmac)
 importFrom(RCurl,base64)
 importFrom(stringr,str_c)

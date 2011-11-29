@@ -1,0 +1,66 @@
+<QuestionForm xmlns="[the QuestionForm schema URL]">
+  <Overview>
+    <Title>Question {{question_id}}</Title>
+    <Text>
+      This is an overview of the questions for the worker to complete.
+    </Text>
+  </Overview>
+  <Question>
+    <QuestionIdentifier>age</QuestionIdentifier>
+    <QuestionContent>
+      <Text>
+        How old are you?
+      </Text>
+    </QuestionContent>
+    <IsRequired>true</IsRequired>
+    <AnswerSpecification>
+      <FreeTextAnswer>
+        <Constraints>
+          <IsNumeric />
+        </Constraints>
+      </FreeTextAnswer>
+    </AnswerSpecification>
+  </Question>
+  <Question>
+    <QuestionIdentifier>sex</QuestionIdentifier>
+    <IsRequired>true</IsRequired>
+    <QuestionContent>
+      <Text>
+        Are you male or female?
+      </Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <SelectionAnswer>
+        <StyleSuggestion>radiobutton</StyleSuggestion>
+        <Selections>
+          <Selection>
+            <SelectionIdentifier>m</SelectionIdentifier>
+            <Text>Male</Text>
+          </Selection>
+          <Selection>
+            <SelectionIdentifier>f</SelectionIdentifier>
+            <Text>Female</Text>
+          </Selection>
+          <Selection>
+            <SelectionIdentifier>NA</SelectionIdentifier>
+            <Text>Prefer not answer</Text>
+          </Selection>
+        </Selections>
+      </SelectionAnswer>
+    </AnswerSpecification>
+  </Question>
+  <Question>
+    <QuestionIdentifier>age</QuestionIdentifier>
+    <QuestionContent>
+      <Text>
+        What is your favourite type of {{food}}?
+      </Text>
+    </QuestionContent>
+    <IsRequired>true</IsRequired>
+    <AnswerSpecification>
+      <FreeTextAnswer>
+      </FreeTextAnswer>
+    </AnswerSpecification>
+  </Question>
+  
+</QuestionForm>

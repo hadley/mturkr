@@ -16,3 +16,4 @@ Collate:
     'req.r'
     'task.r'
     'utils.r'
+    'task-skeleton.r'
