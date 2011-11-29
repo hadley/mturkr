@@ -10,5 +10,5 @@ task_skeleton <- function(task) {
   dir.create(task)
   template <- dir(system.file("task-demo", package = "mturkr"), 
     full.names = TRUE)
-  file.copy(template, task, recursive = TRUE) 
+  invisible(file.copy(template, task, recursive = TRUE))
 }
