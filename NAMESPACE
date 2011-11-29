@@ -1,0 +1,7 @@
+export(as.task)
+export(get_balance)
+export(is.task)
+importFrom(digest,hmac)
+importFrom(RCurl,base64)
+importFrom(stringr,str_c)
+importFrom(stringr,str_wrap)

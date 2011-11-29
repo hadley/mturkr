@@ -1,0 +1,18 @@
+Package: mturkr
+Type: Package
+Title: Tools to work with Amazon's mechanical turk.
+Version: 0.1
+Description: 
+Author: Hadley Wickham <h.wickham@gmail.com>
+Maintainer: Hadley Wickham <h.wickham@gmail.com>
+Imports:
+    XML,
+    stringr,
+    digest
+License: MIT
+Collate:
+    'balance.r'
+    'qualifications.r'
+    'req.r'
+    'task.r'
+    'utils.r'
