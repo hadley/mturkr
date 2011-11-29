@@ -1,6 +1,11 @@
 schema_base_url <- str_c("http://mechanicalturk.amazonaws.com/",
   "AWSMechanicalTurkDataSchemas/")
 
+#' Validate \code{questions.xml}. 
+#'
+#' If you are using whisker templates to create xml tags, this will fail.  
+#' Instead use validate_ 
+#'
 #' @importFrom stringr str_c
 #' @export
 validate_questions <- function(task) {
@@ -11,12 +16,16 @@ validate_questions <- function(task) {
     stop(questions_path, " does not exist", call. = FALSE)
   }
   
+  validate_question_xml(questions_path)
+}
+
+# @param xml either xmlTreeParse or path to xml file
+validate_question_xml <- function(xml) {
   schema_url <- str_c(schema_base_url, "2005-10-01/QuestionForm.xsd")
   schema <- xmlSchemaParse(schema_url)
   
-  xmlSchemaValidate(schema, questions_path)
+  xmlSchemaValidate(schema, xml)
 }
-
 
 #' @importFrom stringr str_c str_replace_all
 #' @S3method format XMLError

@@ -8,7 +8,8 @@ Maintainer: Hadley Wickham <h.wickham@gmail.com>
 Imports:
     XML,
     stringr,
-    digest
+    digest,
+    whisker
 License: MIT
 Collate:
     'balance.r'
@@ -18,3 +19,4 @@ Collate:
     'utils.r'
     'task-skeleton.r'
     'validate.r'
+    'template.r'
