@@ -12,8 +12,8 @@ mturk_req_url <- function(host = "sandbox", ...) {
     Service = "AWSMechanicalTurkRequester",
     Version = "2008-08-02"
   )
-  params <- vapply(params, URLencode, reserved = TRUE, 
-    FUN.VALUE = character(1))
+  
+  params <- vapply(params, url_encode, FUN.VALUE = character(1))
   
   str_c("https://", host2, "?", 
     str_c(names(params), "=", params, collapse = "&"))
@@ -97,6 +97,24 @@ make_signature <- function(secret_key, operation, timestamp) {
   service <- "AWSMechanicalTurkRequester"
   
   sig_val <- str_c(service, operation, timestamp)
-  hash <- hmac(secret_key, sig_val, "sha1", raw = TRUE)
+  hmac_sha1(secret_key, sig_val)
+}
+
+hmac_sha1 <- function(key, string) {
+  hash <- hmac(key, string, "sha1", raw = TRUE)
   base64(hash)
+}
+
+
+url_encode <- function(x) {
+  percent_encode <- function(x) {
+    raw <- vapply(x, function(x) as.character(charToRaw(x)), character(1))
+    str_c("%", raw)
+  }
+
+  letters <- strsplit(x, "")[[1]]
+  not_ok <- str_detect(letters, "[^-A-Za-z0-9_.~]")
+
+  letters[not_ok] <- percent_encode(letters[not_ok])
+  str_c(letters, collapse = "")
 }
