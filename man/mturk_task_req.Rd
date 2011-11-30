@@ -5,6 +5,9 @@
   mturk_task_req(task, operation, host = NULL,
     access_key = NULL, secret_key = NULL, ...)
 }
+\value{
+  an XML object, \code{\link{XMLInternalDocument-class}}
+}
 \description{
   Perform operation for given task.
 }

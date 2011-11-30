@@ -11,6 +11,9 @@
   \item{...}{Other parameters passed on to
   \code{\link{mturk_task_req}}.}
 }
+\value{
+  the HIT type ID
+}
 \description{
   Register your task as a HITType on MTurk. The HIT id is
   stored in your task DESCRIPTION file so that there's
@@ -22,5 +25,11 @@
   If this task has been registered previously, and you have
   changed any of the HIT type metadata, you'll get a
   warning notification.
+}
+\section{Required metadata}{
+  \itemize{ \item \code{Reward}: Dollars to pay for reward,
+  e.g. \code{0.05} for 5 cents.  Can optionally supply
+  currency code for non-USD amounts, e.g.  \code{0.05 CAD}.
+  }
 }
 

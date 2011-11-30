@@ -8,6 +8,13 @@
 #' If this task has been registered previously, and you have changed any of 
 #' the HIT type metadata, you'll get a warning notification.
 #'
+#' @section Required metadata:
+#'
+#' \itemize{
+#'   \item \code{Reward}: Dollars to pay for reward, e.g. \code{0.05} for 
+#'     5 cents.  Can optionally supply currency code for non-USD amounts, e.g.
+#'     \code{0.05 CAD}.
+#' }
 #' @param The location of an mturk task, see \code{\link{as.task}} for
 #'   specification options
 #' @param ... Other parameters passed on to \code{\link{mturk_task_req}}.
@@ -18,7 +25,7 @@ register_task <- function(task = NULL, ...) {
   
   # qual <- parse_qualification(task$Qualifications)
   # duration <- parse_duration(task$TimeLimits)
-  # reward <- parse_reward(task$TimeLimits)
+  reward <- parse_reward(task$TimeLimits)
 
   result <- mturk_task_req(task, "RegisterHITType", 
     Title = task$Title,
@@ -45,4 +52,17 @@ register_task <- function(task = NULL, ...) {
   save_task(task)
   
   id
+}
+
+parse_reward <- function(x) {
+  pieces <- str_split(x, " ")[[1]]
+  if (length(pieces) == 1) {
+    amt <- as.numeric(pieces)
+    cur <- "USD"
+  } else {
+    amt <- as.numeric(pieces[1])
+    cur <- pieces[2]
+  }
+  
+  c(Reward.1.Amount = amt, Reward.1.CurrencyCode = cur)
 }
