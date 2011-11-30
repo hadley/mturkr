@@ -37,8 +37,8 @@ aws_xml_error <- function(errors) {
   if (length(errors) == 0) return()
   
   err_string <- function(err) {
-    code <- toString(err[["Code"]][[1]])
-    msg <- toString(err[["Message"]][[1]])
+    code <- xmlValue(err[["Code"]][[1]])
+    msg <- xmlValue(err[["Message"]][[1]])
 
     str_wrap(str_c("[", code, "] ", msg), exdent = 2)
   }

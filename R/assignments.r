@@ -20,24 +20,28 @@ get_assignments <- function(task = NULL, status, ...) {
   
   ids <- template$hit_id[!is.na(template$hit_id)]
 
-  ldply(ids, get_assignments_for_hit, task = task, status = status, ...)
+  status <- match.arg(status, c("approved", "rejected", "submitted"))
+  str_sub(status, 1, 1) <- toupper(str_sub(status, 1, 1))
+  
+  ldply(ids, get_assignments_for_hit, task = task, status = status,
+    ...)
 }
 
 #' @importFrom plyr ldply
-get_assignments_for_hit <- function(hit_id, task, status, ...) {
-  status <- match.arg(status, c("approved", "rejected", "submitted"))
-  
+get_assignments_for_hit <- function(hit_id, task, status, ...) {  
   # Find out how many pages of results there are
   xml <- mturk_task_req(task, "GetAssignmentsForHIT", 
-    HITId = hit_id, PageSize = 1, PageNumber = 1, ...)
+    AssignmentStatus = status, HITId = hit_id, 
+    PageSize = 1, PageNumber = 1, ...)
   total <- as.numeric(xmlValue(
     getNodeSet(xml, "//TotalNumResults")[[1]][[1]]))
-  pages <- ceiling(total / 100)
+  pages <- ceiling(total / 100)  
 
   # Load all results into a single data frame
   get_ids <- function(page) {
-    xml <- mturk_task_req(task, "GetAssignmentsForHIT", 
-      HITId = hit_id, PageSize = 100, PageNumber = page, ...)
+    xml <- mturk_task_req(task, "GetAssignmentsForHIT",  
+      AssignmentStatus = status, HITId = hit_id, 
+      PageSize = 100, PageNumber = page, ...)
     ldply(getNodeSet(xml, "//Assignment"), extract_answers)
   }
   
@@ -48,7 +52,7 @@ get_assignments_for_hit <- function(hit_id, task, status, ...) {
 extract_answers <- function(assignment) {
   assignment_id <- xmlValue(assignment[["AssignmentId"]])
   worker_id <- xmlValue(assignment[["WorkerId"]])
-  status <- xmlValue(assignment[["AssignmentStatus"]])
+  assignment_status <- xmlValue(assignment[["AssignmentStatus"]])
   auto_approval_time <- parse_time(xmlValue(assignment[["AutoApprovalTime"]]))
   accept_time <- parse_time(xmlValue(assignment[["AcceptTime"]]))
   submit_time <- parse_time(xmlValue(assignment[["SubmitTime"]]))
@@ -71,7 +75,17 @@ extract_answers <- function(assignment) {
   # Can't remember how to turn a list into a data frame :(
   answers_df <- structure(answers, class = "data.frame", row.names = 1L)
 
-  data.frame(assignment_id, worker_id, status, auto_approval_time,
-    accept_time, submit_time, answers_df)
+  data.frame(assignment_id, worker_id, auto_approval_time, assignment_status,
+    accept_time, submit_time, answers_df, stringsAsFactors = FALSE)
 }
 
+
+review_assignment <- function(task, assignment_id, status, feedback = NULL) {
+  status <- match.arg(tolower(status), c("approve", "reject"))
+  ops <- c("approve" = "ApproveAssignment", "reject" = "RejectAssignment")
+  
+  mturk_task_req(task, ops[[status]], 
+    AssignmentId = assignment_id,
+    RequesterFeedback = feedback)
+  TRUE
+}
