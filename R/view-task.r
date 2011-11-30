@@ -3,7 +3,7 @@
 # If false, displays message giving function to use to cleanup 
 
 #' @export
-preview_task <- function(task) {
+view_task <- function(task) {
   task <- as.task(task)
   
   if (is.null(task$HitTypeId)) {

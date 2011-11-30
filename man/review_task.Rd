@@ -2,7 +2,7 @@
 \alias{review_task}
 \title{Review task.}
 \usage{
-  review_task(task = NULL, ...)
+  review_task(task = NULL, ..., quiet = FALSE)
 }
 \arguments{
   \item{...}{Other parameters passed on to
