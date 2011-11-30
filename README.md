@@ -10,6 +10,29 @@ Important terms:
 * HIT Type or Task: a group of questions of the same form
 * Assignment: one question assigned to a person
 
+## Key functions
+
+* `init_task` - initialises a task directory with basic directory structure
+
+* `publish_task` - combines `questions.xml` and `template.csv` to and
+  publishes all HITs
+
+* `view_task` - opens web browser pointing to one of your HITs
+
+* `review_task` - downloads assignments needing review, and approves/rejects
+  according to value of status column
+
+* `unpublish_task` - removes all published HITs (in case you've made a mistake
+  or were just testing)
+
+Other useful functions include:
+
+* `get_balance` to see how much money you have left.
+
+Note that all these functions take a directory as their first argument (if you omit the directory it will use the last directory `mturkr` saw, so you can save some typing). 
+
+By default all work is done in the sandbox. When you are ready to publish your questions to real workers, set `Host: production` in your `DESCRIPTION` file.
+
 ## Design principles
 
 A task is represented as a set of files in a directory (see below for details).
@@ -30,20 +53,11 @@ User created:
 * `questions.xml`: xml file for question. Uses mustache template.
 * `quals-*/`: qualifications.  See below for details.
 * `template.csv`: template data. Each column becomes mustache key.
-  * would be better to use something other than csv so you could have nested
-    keys (list of named lists?)
-  * build automatically from separator (`.`?) in column names? 
-  * have another data frame describes column names?
-* ? `static`: directory of static files uploaded to S3
 
 `mturkr` created:
 
-* `hit.csv`:  list of hits
-* `hit-review.csv`: list of hits to review
-* `hit-results.csv`: list of hit results
-* `qualification-results.csv`
-
-First argument to all functions is the path to the task directory. If omitted, uses the last task.
+* `hit-review.csv`: assignments needing review
+* `hit-results.csv`: answers from approved assignments
 
 ## Useful amazon references
 
