@@ -22,7 +22,7 @@ mturk_req_url <- function(host = "sandbox", ...) {
 #' @importFrom stringr str_wrap
 mturk_req <- function(host = "sandbox", ...) {
   url <- mturk_req_url(host, ...)
-  message(url)
+  # message(url)
   
   result <- getURL(url)
   xml <- xmlTreeParse(result)$doc$children[[1]]
@@ -30,7 +30,7 @@ mturk_req <- function(host = "sandbox", ...) {
   request <- xml[["OperationRequest"]]
   
   if (!is.null(request[["Errors"]])) {
-    err <- xml[["Errors"]][[1]]
+    err <- request[["Errors"]][[1]]
     code <- toString(err[["Code"]][[1]])
     msg <- toString(err[["Message"]][[1]])
     
