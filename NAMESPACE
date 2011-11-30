@@ -1,6 +1,7 @@
 export(as.task)
 export(get_balance)
 export(is.task)
+export(publish_task)
 export(register_task)
 export(render_templates)
 export(task_skeleton)

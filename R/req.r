@@ -30,7 +30,7 @@ mturk_req <- function(host = "sandbox", operation, ...) {
   # Find and report on all errors
   aws_xml_error(getNodeSet(xml, "//Error"))
   
-  xml[[str_c(operation, "Result")]]
+  xml
 }
 
 aws_xml_error <- function(errors) {

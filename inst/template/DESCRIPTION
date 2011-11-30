@@ -5,6 +5,7 @@ Description: This is a paragraph length description of the task that workers
   are indented by any consistent number of spaces or tabs.
 Keywords: comma, separated, keywords
 Reward: 0.01 USD
-TimeLimit: 30 days
+SingleTimeLimit: 1 day
+OverallTimeLimit: 30 days
 MaxAssignments: 1
 Qualifications:
