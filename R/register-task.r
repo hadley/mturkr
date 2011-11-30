@@ -29,19 +29,17 @@ register_task <- function(task = NULL, ...) {
   task <- as.task(task)
   
   # qual <- parse_qualification(task$Qualifications)
-  duration <- parse_duration(task$TimeLimits)
-  reward <- parse_reward(task$TimeLimits)
+  duration <- parse_duration(task$TimeLimit)
+  reward <- parse_reward(task$Reward)
 
   result <- mturk_task_req(task, "RegisterHITType", 
     Title = task$Title,
     Description = task$Description,
     Keywords = task$Keywords,
     # QualificationRequirement = qual,
-    # Reward = reward,
     AssignmentDurationInSeconds = duration,
-    Reward.1.Amount = 0.01,
-    Reward.1.CurrencyCode = "USD",
-    Reward = 
+    Reward.1.Amount = reward$amt,
+    Reward.1.CurrencyCode = reward$cur,
     ...)
     
   id <- xmlValue(result[["HITTypeId"]][[1]])
@@ -68,7 +66,7 @@ parse_reward <- function(x) {
     cur <- pieces[2]
   }
   
-  c(Reward.1.Amount = amt, Reward.1.CurrencyCode = cur)
+  list(amt = amt, cur = cur)
 }
 
 parse_duration <- function(x) {
