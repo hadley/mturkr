@@ -107,6 +107,9 @@ hmac_sha1 <- function(key, string) {
 
 
 url_encode <- function(x) {
+  stopifnot(length(x) == 1)
+  if (is.na(x)) return(NA_character_)
+  
   percent_encode <- function(x) {
     raw <- vapply(x, function(x) as.character(charToRaw(x)), character(1))
     str_c("%", raw)

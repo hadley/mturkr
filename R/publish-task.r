@@ -21,15 +21,16 @@ publish_task <- function(task = NULL, ..., quiet = FALSE) {
   # Load template, and restrict to HITs that haven't been created
   template <- load_template(task)
   if (is.null(template$hit_id)) template$hit_id <- NA
-  template <- template[is.na(template$hit_id), , drop = FALSE]
-  n <- nrow(template)
+  rows <- which(is.na(template$hit_id))
+  n <- length(rows)
   
-  max_assignments <- template$max_assignments %||% rep(1, n)
+  max_assignments <- template$max_assignments %||% rep(1, nrow(template))
   lifetime <- parse_duration(task$OverallTimeLimit)
 
-  templates <- render_templates(task, data = template)
+  templates <- render_templates(task, data = template[rows, , drop = FALSE])
   
   for(i in seq_along(templates)) {
+    row <- rows[i]
     if (!quiet) {
       message("Creating HIT [", i, " /", n, "]")
     }
@@ -38,9 +39,9 @@ publish_task <- function(task = NULL, ..., quiet = FALSE) {
       HITTypeId = hit_type_id, 
       Question = templates[[i]], 
       LifetimeInSeconds = lifetime,
-      MaxAssignments = max_assignments[i])
+      MaxAssignments = max_assignments[row])
     hit_id <- xmlValue(xml[["HIT"]][["HITId"]][[1]])
-    template$hit_id[i] <- hit_id
+    template$hit_id[row] <- hit_id
     write.csv(template, file.path(task$path, "template.csv"), 
       row.names = FALSE)
   }

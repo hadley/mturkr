@@ -21,7 +21,7 @@ load_template <- function(task) {
   if (!file.exists(data_path)) {
     stop(data_path, " doesn't exist", call. = FALSE)
   }
-  data <- read.csv(data_path)
+  read.csv(data_path, stringsAsFactors = FALSE)
 }
 
 #' @importFrom whisker whisker.render
