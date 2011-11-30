@@ -21,3 +21,4 @@ Collate:
     'task-skeleton.r'
     'validate.r'
     'template.r'
+    'register-task.r'

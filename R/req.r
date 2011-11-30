@@ -20,24 +20,32 @@ mturk_req_url <- function(host = "sandbox", ...) {
 }
 
 #' @importFrom stringr str_wrap
-mturk_req <- function(host = "sandbox", ...) {
-  url <- mturk_req_url(host, ...)
+mturk_req <- function(host = "sandbox", operation, ...) {
+  url <- mturk_req_url(host = host, Operation = operation, ...)
   # message(url)
   
   result <- getURL(url)
   xml <- xmlTreeParse(result)$doc$children[[1]]
   
-  request <- xml[["OperationRequest"]]
+  # Find and report on all errors
+  aws_xml_error(getNodeSet(xml, "//Error"))
   
-  if (!is.null(request[["Errors"]])) {
-    err <- request[["Errors"]][[1]]
+  xml[[str_c(operation, "Result")]]
+}
+
+aws_xml_error <- function(errors) {
+  if (length(errors) == 0) return()
+  
+  err_string <- function(err) {
     code <- toString(err[["Code"]][[1]])
     msg <- toString(err[["Message"]][[1]])
-    
-    stop(str_wrap(str_c("[", code, "] ", msg), exdent = 2), call. = FALSE)
+
+    str_wrap(str_c("[", code, "] ", msg), exdent = 2)
   }
   
-  xml
+  errs <- vapply(errors, err_string, character(1))
+  stop(str_c(errs, collapse = "\n\n"), call. = FALSE)
+  
 }
 
 #' Perform operation for given task.
@@ -61,6 +69,8 @@ mturk_req <- function(host = "sandbox", ...) {
 #' this will allow anyway to charge jobs to your amazon account. If you do
 #' accidentally publish it, go to the url above and deactivate it and 
 #' generate new access and secret keys.
+#'
+#' @return an XML object, \code{\link{XMLInternalDocument-class}}
 mturk_task_req <- function(task, operation, host = NULL, access_key = NULL, secret_key = NULL, ...) {
   task <- as.task(task)
   
@@ -72,7 +82,7 @@ mturk_task_req <- function(task, operation, host = NULL, access_key = NULL, secr
   time <- timestamp()
   sig <- make_signature(secret_key, operation, time)
   
-  mturk_req(host = host, AWSAccessKeyId = access_key, Operation = operation, 
+  mturk_req(host = host, AWSAccessKeyId = access_key, operation = operation, 
     Timestamp = time, Signature = sig, ...)
 }
 

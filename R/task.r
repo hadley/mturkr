@@ -57,6 +57,9 @@ load_task <- function(path) {
   desc$path <- path
   
   # Parse comma separated components
+  if (!is.null(desc$HitTypeId)) {
+    desc$HitTypeId <- str_trim(str_split(desc$HitTypeId, ", ?")[[1]])    
+  }
 
   # Set defaults
   defaults <- list(
@@ -72,7 +75,11 @@ save_task <- function(task) {
   
   path <- file.path(task$path, "DESCRIPTION")
   task$path <- NULL
+  task$HitTypeId <- str_c(task$HitTypeId, collapse = ", ")
   
-  write.dcf(path, x)
+  dcf <- as.data.frame.list(task)
+  stopifnot(nrow(dcf) == 1)
+  
+  write.dcf(dcf, path)
 }
 

@@ -1,7 +1,6 @@
 #' Retrieves your remaining balance.
 #'
-#' @param The location of an mturk task, see \code{\link{as.task}} for
-#'   specification options
+#' @inheritParams create_task
 #' @export
 get_balance <- function(task = NULL, ...) {
   task <- as.task(task)
