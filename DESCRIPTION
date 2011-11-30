@@ -24,3 +24,4 @@ Collate:
     'register-task.r'
     'publish-task.r'
     'preview.r'
+    'list-hits.r'

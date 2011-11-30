@@ -63,6 +63,10 @@ publish_task <- function(task = NULL, ..., quiet = FALSE) {
 #' rejected, and disposes of the HIT and all assignment data.".
 #'
 #' In MTurk API terminology this is disabling the HIT.
+#' 
+#' This function removes both HITs listed in the template ("linked" HITs) and
+#' other HITs associated with this task that are on MTurk, but not recorded in
+#' the csv file ("unlinked" HITs).
 #'
 #' @inheritParams publish_task
 #' @return Invisibly returns disabled HIT ids
@@ -79,13 +83,23 @@ unpublish_task <- function(task, ..., quiet = FALSE) {
   for (i in seq_along(rows)) {
     row <- rows[[i]]
     if (!quiet) {
-      message("Unpublishing HIT [", i, "/", n, "] ", template$hit_id[row])
+      message("Unpublishing linked HIT [", i, "/", n, "] ",
+        template$hit_id[row])
     }
-    mturk_task_req(task, "DisableHIT",
-      HITId = template$hit_id[row])
+    mturk_task_req(task, "DisableHIT", HITId = template$hit_id[row])
     template$hit_id[row] <- NA
     write.csv(template, file.path(task$path, "template.csv"), 
       row.names = FALSE)
+  }
+  
+  others <- list_hits(task)
+  n <- length(others)
+  for (i in seq_along(others)) {
+    id <- others[[i]]
+    if (!quiet) {
+      message("Unpublishing unlinked HIT [", i, "/", n, "] ", id)
+    }
+    mturk_task_req(task, "DisableHIT", HITId = id)
   }
   
   invisible(rows)

@@ -19,5 +19,10 @@
 }
 \details{
   In MTurk API terminology this is disabling the HIT.
+
+  This function removes both HITs listed in the template
+  ("linked" HITs) and other HITs associated with this task
+  that are on MTurk, but not recorded in the csv file
+  ("unlinked" HITs).
 }
 
