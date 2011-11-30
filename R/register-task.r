@@ -14,6 +14,11 @@
 #'   \item \code{Reward}: Dollars to pay for reward, e.g. \code{0.05} for 
 #'     5 cents.  Can optionally supply currency code for non-USD amounts, e.g.
 #'     \code{0.05 CAD}.
+#'   
+#'   \item \code{TimeLimit}: Maximum amount of time a worker is allowed to 
+#'     take to complete each HIT. Can be an integer (\code{1}), or can specify
+#'     seconds, minutes, hours, days or weeks (or any unique prefix):
+#'     \code{40 seconds}, \code{5 minutes}, \code{1 day}, \code{2 w}.
 #' }
 #' @param The location of an mturk task, see \code{\link{as.task}} for
 #'   specification options
@@ -24,7 +29,7 @@ register_task <- function(task = NULL, ...) {
   task <- as.task(task)
   
   # qual <- parse_qualification(task$Qualifications)
-  # duration <- parse_duration(task$TimeLimits)
+  duration <- parse_duration(task$TimeLimits)
   reward <- parse_reward(task$TimeLimits)
 
   result <- mturk_task_req(task, "RegisterHITType", 
@@ -33,10 +38,9 @@ register_task <- function(task = NULL, ...) {
     Keywords = task$Keywords,
     # QualificationRequirement = qual,
     # Reward = reward,
-    # AssignmentDurationInSeconds = duration,
+    AssignmentDurationInSeconds = duration,
     Reward.1.Amount = 0.01,
     Reward.1.CurrencyCode = "USD",
-    AssignmentDurationInSeconds = 60 * 60 * 24,
     Reward = 
     ...)
     
@@ -65,4 +69,15 @@ parse_reward <- function(x) {
   }
   
   c(Reward.1.Amount = amt, Reward.1.CurrencyCode = cur)
+}
+
+parse_duration <- function(x) {
+  pieces <- str_split(x, " ")[[1]]
+  if (length(pieces) == 1) return(as.numeric(pieces))
+  
+  seconds <- cumprod(c(seconds = 1, minutes = 60, hours = 60, 
+    days = 24, weeks = 7))
+  
+  unit <- match.arg(pieces[2], names(seconds))
+  as.numeric(pieces[1]) * seconds[[unit]]
 }

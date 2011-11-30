@@ -30,6 +30,11 @@
   \itemize{ \item \code{Reward}: Dollars to pay for reward,
   e.g. \code{0.05} for 5 cents.  Can optionally supply
   currency code for non-USD amounts, e.g.  \code{0.05 CAD}.
-  }
+
+  \item \code{TimeLimit}: Maximum amount of time a worker
+  is allowed to take to complete each HIT. Can be an
+  integer (\code{1}), or can specify seconds, minutes,
+  hours, days or weeks (or any unique prefix): \code{40
+  seconds}, \code{5 minutes}, \code{1 day}, \code{2 w}. }
 }
 
