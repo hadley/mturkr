@@ -10,7 +10,8 @@ Imports:
     RCurl,
     stringr,
     digest,
-    whisker
+    whisker,
+    plyr
 License: MIT
 Collate:
     'balance.r'
