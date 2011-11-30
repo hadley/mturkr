@@ -24,6 +24,10 @@ publish_task <- function(task = NULL, ..., quiet = FALSE) {
   rows <- which(is.na(template$hit_id))
   n <- length(rows)
   
+  if (!quiet)
+    message(sum(!is.na(template$hit_id)), " HITs already published")
+  if (length(n) == 0) return()
+  
   max_assignments <- template$max_assignments %||% rep(1, nrow(template))
   lifetime <- parse_duration(task$OverallTimeLimit)
 
@@ -32,7 +36,7 @@ publish_task <- function(task = NULL, ..., quiet = FALSE) {
   for(i in seq_along(templates)) {
     row <- rows[i]
     if (!quiet) {
-      message("Creating HIT [", i, " /", n, "]")
+      message("Creating HIT [", i, "/", n, "]")
     }
 
     xml <- mturk_task_req(task, "CreateHIT",
