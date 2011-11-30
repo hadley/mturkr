@@ -2,7 +2,7 @@
 #'
 #' @param task directory where you want to create the task
 #' @export
-task_skeleton <- function(task) {
+init_task <- function(task) {
   if (file.exists(task)) {
     stop("Directory ", task, " already exists", call. = FALSE)
   }

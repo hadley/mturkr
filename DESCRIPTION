@@ -18,7 +18,6 @@ Collate:
     'qualifications.r'
     'req.r'
     'utils.r'
-    'task-skeleton.r'
     'validate.r'
     'template.r'
     'register-task.r'
@@ -28,3 +27,4 @@ Collate:
     'assignments.r'
     'task.r'
     'view-task.r'
+    'init-task.r'
