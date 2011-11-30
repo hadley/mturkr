@@ -25,3 +25,5 @@ Collate:
     'publish-task.r'
     'preview.r'
     'list-hits.r'
+    'review-task.r'
+    'assignments.r'
