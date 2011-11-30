@@ -8,6 +8,9 @@
   \item{...}{Other parameters passed on to
   \code{\link{mturk_task_req}}.}
 }
+\value{
+  Invisibly returns new HIT ids
+}
 \description{
   If present, a column in the template called
   \code{max_assignments} will be used to set the maximum

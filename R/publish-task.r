@@ -12,6 +12,7 @@
 #'     hours, days or weeks (or any unique prefix): \code{40 seconds}, 
 #'    \code{5 minutes}, \code{1 day}, \code{2 w}.
 #' }
+#' @return Invisibly returns new HIT ids
 #' @export
 publish_task <- function(task = NULL, ..., quiet = FALSE) {
   task <- as.task(task)
@@ -23,9 +24,11 @@ publish_task <- function(task = NULL, ..., quiet = FALSE) {
   if (is.null(template$hit_id)) template$hit_id <- NA
   rows <- which(is.na(template$hit_id))
   n <- length(rows)
+
+  n_published <- sum(!is.na(template$hit_id))
+  if (!quiet && n_published > 0)
+    message(n_published, " HITs already published")
   
-  if (!quiet)
-    message(sum(!is.na(template$hit_id)), " HITs already published")
   if (length(n) == 0) return()
   
   max_assignments <- template$max_assignments %||% rep(1, nrow(template))
@@ -36,7 +39,7 @@ publish_task <- function(task = NULL, ..., quiet = FALSE) {
   for(i in seq_along(templates)) {
     row <- rows[i]
     if (!quiet) {
-      message("Creating HIT [", i, "/", n, "]")
+      message("Publishing HIT [", i, "/", n, "]")
     }
 
     xml <- mturk_task_req(task, "CreateHIT",
@@ -51,4 +54,39 @@ publish_task <- function(task = NULL, ..., quiet = FALSE) {
   }
   
   invisible(template$hit_id)
+}
+
+#' Unpublish all published HITs.
+#'
+#' This operation "removes a HIT from the Amazon Mechanical Turk marketplace,
+#' approves all submitted assignments that have not already been approved or
+#' rejected, and disposes of the HIT and all assignment data.".
+#'
+#' In MTurk API terminology this is disabling the HIT.
+#'
+#' @inheritParams publish_task
+#' @return Invisibly returns disabled HIT ids
+#' @export
+unpublish_task <- function(task, ..., quiet = FALSE) {
+  task <- as.task(task)
+  
+  template <- load_template(task)
+  rows <- which(!is.na(template$hit_id))
+  ids <- template$hit_id[rows]
+  
+  n <- length(ids)
+  
+  for (i in seq_along(rows)) {
+    row <- rows[[i]]
+    if (!quiet) {
+      message("Unpublishing HIT [", i, "/", n, "] ", template$hit_id[row])
+    }
+    mturk_task_req(task, "DisableHIT",
+      HITId = template$hit_id[row])
+    template$hit_id[row] <- NA
+    write.csv(template, file.path(task$path, "template.csv"), 
+      row.names = FALSE)
+  }
+  
+  invisible(rows)
 }
