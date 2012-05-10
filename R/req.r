@@ -65,8 +65,8 @@ aws_xml_error <- function(errors) {
 #' }
 #'
 #' If your code is publically available (such as through a public svn or 
-#' git repository) DO NOT store your secret in your task description, as 
-#' this will allow anyway to charge jobs to your amazon account. If you do
+#' git repository) DO NOT store your secret key in your task description, as 
+#' this will allow anyone to charge jobs to your amazon account. If you do
 #' accidentally publish it, go to the url above and deactivate it and 
 #' generate new access and secret keys.
 #'
