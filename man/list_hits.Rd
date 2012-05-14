@@ -5,6 +5,9 @@
   list_hits(task, ...)
 }
 \arguments{
+  \item{task}{The location of an mturk task, see
+  \code{\link{as.task}} for specification options}
+
   \item{...}{Other parameters passed on to
   \code{\link{mturk_task_req}}.}
 }

@@ -45,6 +45,7 @@ local({
 })
 
 # Load task DESCRIPTION into convenient form.
+#' @importFrom stringr str_split str_trim
 load_task <- function(path) {
   path <- normalizePath(path)
   path_desc <- file.path(path, "DESCRIPTION")

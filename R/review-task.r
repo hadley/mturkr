@@ -7,6 +7,7 @@
 #'
 #' @export
 #' @inheritParams publish_task
+#' @importFrom plyr rbind.fill
 review_task <- function(task = NULL, ..., quiet = FALSE) {
   task <- as.task(task)
   type_id <- task$HitTypeId[1]

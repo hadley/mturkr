@@ -5,7 +5,7 @@
   register_task(task = NULL, ...)
 }
 \arguments{
-  \item{The}{location of an mturk task, see
+  \item{task}{The location of an mturk task, see
   \code{\link{as.task}} for specification options}
 
   \item{...}{Other parameters passed on to

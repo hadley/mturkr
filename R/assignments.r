@@ -14,6 +14,7 @@
 #'   submit_time.
 #' @export
 #' @importFrom plyr ldply
+#' @importFrom stringr str_sub str_sub<-
 get_assignments <- function(task = NULL, status, ...) {
   task <- as.task(task)
   template <- load_template(task)
@@ -28,6 +29,7 @@ get_assignments <- function(task = NULL, status, ...) {
 }
 
 #' @importFrom plyr ldply
+#' @importFrom XML xmlValue getNodeSet
 get_assignments_for_hit <- function(hit_id, task, status, ...) {  
   # Find out how many pages of results there are
   xml <- mturk_task_req(task, "GetAssignmentsForHIT", 

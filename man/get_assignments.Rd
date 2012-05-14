@@ -9,6 +9,9 @@
   "approved", "rejected", or "submitted" (i.e. assignments
   waiting approval).}
 
+  \item{task}{The location of an mturk task, see
+  \code{\link{as.task}} for specification options}
+
   \item{...}{Other parameters passed on to
   \code{\link{mturk_task_req}}.}
 }

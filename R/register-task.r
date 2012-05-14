@@ -20,7 +20,7 @@
 #'     specify seconds, minutes, hours, days or weeks (or any unique prefix):
 #'     \code{40 seconds}, \code{5 minutes}, \code{1 day}, \code{2 w}.
 #' }
-#' @param The location of an mturk task, see \code{\link{as.task}} for
+#' @param task The location of an mturk task, see \code{\link{as.task}} for
 #'   specification options
 #' @param ... Other parameters passed on to \code{\link{mturk_task_req}}.
 #' @return the HIT type ID

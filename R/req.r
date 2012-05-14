@@ -20,6 +20,8 @@ mturk_req_url <- function(host = "sandbox", ...) {
 }
 
 #' @importFrom stringr str_wrap
+#' @importFrom XML xmlTreeParse getNodeSet
+#' @importFrom RCurl getURL
 mturk_req <- function(host = "sandbox", operation, ...) {
   url <- mturk_req_url(host = host, Operation = operation, ...)
   # message(url)
@@ -33,6 +35,7 @@ mturk_req <- function(host = "sandbox", operation, ...) {
   xml
 }
 
+#' @importFrom XML xmlValue
 aws_xml_error <- function(errors) {
   if (length(errors) == 0) return()
   
@@ -89,9 +92,7 @@ mturk_task_req <- function(task, operation, host = NULL, access_key = NULL, secr
 
 #' Make HMAC encoded signature for all AWS requests.
 #' 
-#' @importFrom digest hmac
 #' @importFrom stringr str_c
-#' @importFrom RCurl base64
 #' @return base64 encoded signature
 make_signature <- function(secret_key, operation, timestamp) {
   service <- "AWSMechanicalTurkRequester"
@@ -100,12 +101,15 @@ make_signature <- function(secret_key, operation, timestamp) {
   hmac_sha1(secret_key, sig_val)
 }
 
+#' @importFrom digest hmac
+#' @importFrom RCurl base64
 hmac_sha1 <- function(key, string) {
   hash <- hmac(key, string, "sha1", raw = TRUE)
   base64(hash)
 }
 
 
+#' @importFrom stringr str_detect
 url_encode <- function(x) {
   stopifnot(length(x) == 1)
   if (is.na(x)) return(NA_character_)

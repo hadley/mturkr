@@ -12,6 +12,8 @@ Imports:
     digest,
     whisker,
     plyr
+Suggests:
+    testthat
 License: MIT
 Collate:
     'balance.r'
@@ -28,3 +30,4 @@ Collate:
     'task.r'
     'view-task.r'
     'init-task.r'
+    'sign.r'

@@ -20,6 +20,7 @@ validate_questions <- function(task) {
 }
 
 # @param xml either xmlTreeParse or path to xml file
+#' @importFrom XML xmlSchemaParse xmlSchemaValidate
 validate_question_xml <- function(xml) {
   schema_url <- str_c(schema_base_url, "2005-10-01/QuestionForm.xsd")
   schema <- xmlSchemaParse(schema_url)
