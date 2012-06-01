@@ -24,7 +24,8 @@ mturk_req <- function(host = "sandbox", operation, ...) {
   url <- mturk_req_url(host = host, Operation = operation, ...)
   # message(url)
   
-  result <- getURL(url, ssl.verifypeer = FALSE)
+  result <- getURL(url, cainfo = system.file("CurlSSL/cacert.pem", package = "RCurl")))
+  result <- str_c(str_split(result, "<\\?xml.*\\?>\n")[[1]], collapse = "")
   xml <- xmlTreeParse(result)$doc$children[[1]]
   
   # Find and report on all errors
