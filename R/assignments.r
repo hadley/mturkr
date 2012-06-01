@@ -4,8 +4,8 @@
 #' \code{\link{review_task}}.
 #'
 #' @inheritParams publish_task
-#' @param status Which status of assignments to retrieved: "approved",
-#'   "rejected", or "submitted" (i.e. assignments waiting approval).
+#' @param status Which assignment status to retrieve: "approved",
+#'   "rejected", or "submitted" (i.e. assignments awaiting approval).
 #' @return A data frame with a column for each question (named according to
 #'   the question identifier. Multiple anwsers (e.g. from multiple selection
 #'   questions) are separated with the unicode record separater, 
@@ -57,11 +57,10 @@ extract_answers <- function(assignment) {
   accept_time <- parse_time(xmlValue(assignment[["AcceptTime"]]))
   submit_time <- parse_time(xmlValue(assignment[["SubmitTime"]]))
   
-  answer_raw <- xmlValue(assignment[["Answer"]])
-  answer_xml <- xmlTreeParse(answer_raw)$doc$children[[1]]
-  
   ns <- c(qa = "http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2005-10-01/QuestionFormAnswers.xsd")
-  answers <- getNodeSet(answer_xml, "//qa:Answer", ns)
+  answer_raw <- getNodeSet(assignment, "//qa:QuestionFormAnswers", ns)[[1]]
+		
+	answers <- getNodeSet(answer_raw, "//qa:Answer", ns)
   
   question_ids <- vapply(answers, function(x) xmlValue(x[["QuestionIdentifier"]]), character(1))
   
