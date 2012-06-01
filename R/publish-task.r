@@ -1,7 +1,7 @@
 #' Publish all templated HITs.
 #' 
 #' If present, a column in the template called \code{max_assignments} will be
-#' used to set the maximum number of assingments for each HIT.
+#' used to set the maximum number of assignments for each HIT.
 #'
 #' @inheritParams register_task
 #' @section Required metadata:
@@ -31,7 +31,7 @@ publish_task <- function(task = NULL, ..., quiet = FALSE) {
   
   if (length(n) == 0) return()
   
-  max_assignments <- task$max_assignments %||% rep(1, nrow(template))
+  max_assignments <- template$max_assignments %||% rep(1, nrow(template))
   lifetime <- parse_duration(task$OverallTimeLimit)
 
   templates <- render_templates(task, data = template[rows, , drop = FALSE])
