@@ -1,7 +1,7 @@
 #' Publish all templated HITs.
 #' 
 #' If present, a column in the template called \code{max_assignments} will be
-#' used to set the maximum number of assingments for each HIT.
+#' used to set the maximum number of assignments for each HIT.
 #'
 #' @inheritParams register_task
 #' @section Required metadata:
