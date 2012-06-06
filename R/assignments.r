@@ -60,11 +60,13 @@ extract_answers <- function(assignment) {
   submit_time <- parse_time(xmlValue(assignment[["SubmitTime"]]))
   
   ns <- c(qa = "http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2005-10-01/QuestionFormAnswers.xsd")
-  answer_raw <- getNodeSet(assignment, "//qa:QuestionFormAnswers", ns)[[1]]
-		
-	answers <- getNodeSet(answer_raw, "//qa:Answer", ns)
+
+  answer_raw <- xmlValue(assignment[["Answer"]])
+  answer_xml <- xmlTreeParse(answer_raw)$doc$children[[1]]
   
-  question_ids <- vapply(answers, function(x) xmlValue(x[["QuestionIdentifier"]]), character(1))
+  answers <- getNodeSet(answer_xml, "//qa:Answer", ns)  
+  question_ids <- vapply(answers, FUN.VALUE = character(1),
+    function(x) xmlValue(x[["QuestionIdentifier"]]))
   
   collapse_answers <- function(xml) {
     answer_nodes <- "//FreeText|//SelectionIdentifier|//OtherSelectionText"
@@ -73,8 +75,8 @@ extract_answers <- function(assignment) {
   }
   answers <- lapply(answers, collapse_answers)
   names(answers) <- question_ids
-  # Can't remember how to turn a list into a data frame :(
-  answers_df <- structure(answers, class = "data.frame", row.names = 1L)
+
+  answers_df <- as.data.frame(answers)
 
   data.frame(assignment_id, worker_id, auto_approval_time, assignment_status,
     accept_time, submit_time, answers_df, stringsAsFactors = FALSE)
