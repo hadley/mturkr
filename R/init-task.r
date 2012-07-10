@@ -8,6 +8,9 @@ init_task <- function(task) {
   }
   
   dir.create(task)
+  message("Make sure to modify your access key in ", 
+    file.path(task, "DESCRIPTION"))
+  
   template <- dir(system.file("template", package = "mturkr"), 
     full.names = TRUE)
   invisible(file.copy(template, task, recursive = TRUE))
