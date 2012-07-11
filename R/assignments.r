@@ -83,12 +83,12 @@ extract_answers <- function(assignment) {
 }
 
 
-review_assignment <- function(task, assignment_id, status, feedback = NULL) {
+review_assignment <- function(task, assignment_id, status, feedback = NULL, ...) {
   status <- match.arg(tolower(status), c("approve", "reject"))
   ops <- c("approve" = "ApproveAssignment", "reject" = "RejectAssignment")
   
   mturk_task_req(task, ops[[status]], 
     AssignmentId = assignment_id,
-    RequesterFeedback = feedback)
+    RequesterFeedback = feedback, ...)
   TRUE
 }
