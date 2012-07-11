@@ -1,9 +1,9 @@
 #' Review task.
 #'
 #' Reviewing takes place in two steps: reviewable HITs are downloaded and
-#' stored in \code{hit-review.csv}, and then the review column is inspected
-#' and matched to approve or reject (or prefixes) and those reviews are 
-#' uploaded back to MTurk and removed from the csv file.
+#' stored in \code{hit-reviews.csv}, and then the status column is inspected
+#' and matched to approve or reject (or prefixes) and those reviews (with 
+#' their feedback) are uploaded back to MTurk and removed from the csv file.
 #'
 #' @export
 #' @inheritParams publish_task
@@ -38,12 +38,12 @@ review_task <- function(task = NULL, ..., quiet = FALSE) {
         rev$assignment_id)      
     }
     
-    try(review_assignment(task, rev$assignment_id, rev$status, rev$feedback))
+    try(review_assignment(task, rev$assignment_id, rev$status, rev$feedback, ...))
   }
   
   if (n_reviews > 0) {
     # rev <- reviews[to_review, , drop = FALSE]
-    # review_assignments(task, rev$assignment_id, rev$status, rev$feedback)
+    # review_assignments(task, rev$assignment_id, rev$status, rev$feedback, ...)
     
     old_results <- load_task_csv(task, "hit-results")
     new_results <- reviews[to_review, , drop = FALSE]
