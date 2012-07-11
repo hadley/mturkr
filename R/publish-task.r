@@ -17,7 +17,7 @@
 publish_task <- function(task = NULL, ..., quiet = FALSE) {
   task <- as.task(task)
     
-  hit_type_id <- register_task(task)
+  hit_type_id <- register_task(task, ...)
   
   # Load template, and restrict to HITs that haven't been created
   template <- load_template(task)
@@ -46,7 +46,7 @@ publish_task <- function(task = NULL, ..., quiet = FALSE) {
       HITTypeId = hit_type_id, 
       Question = templates[[i]], 
       LifetimeInSeconds = lifetime,
-      MaxAssignments = max_assignments[row])
+      MaxAssignments = max_assignments[row], ...)
     hit_id <- xmlValue(xml[["HIT"]][["HITId"]][[1]])
     template$hit_id[row] <- hit_id
     write.csv(template, file.path(task$path, "template.csv"), 
@@ -86,7 +86,7 @@ unpublish_task <- function(task, ..., quiet = FALSE) {
       message("Unpublishing linked HIT [", i, "/", n, "] ",
         template$hit_id[row])
     }
-    mturk_task_req(task, "DisableHIT", HITId = template$hit_id[row])
+    mturk_task_req(task, "DisableHIT", HITId = template$hit_id[row], ...)
     template$hit_id[row] <- NA
     write.csv(template, file.path(task$path, "template.csv"), 
       row.names = FALSE)
@@ -99,7 +99,7 @@ unpublish_task <- function(task, ..., quiet = FALSE) {
     if (!quiet) {
       message("Unpublishing unlinked HIT [", i, "/", n, "] ", id)
     }
-    mturk_task_req(task, "DisableHIT", HITId = id)
+    mturk_task_req(task, "DisableHIT", HITId = id, ...)
   }
   
   invisible(rows)
