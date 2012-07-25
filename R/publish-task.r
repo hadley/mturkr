@@ -92,7 +92,7 @@ unpublish_task <- function(task, ..., quiet = FALSE) {
       row.names = FALSE)
   }
   
-  others <- list_hits(task)
+  others <- list_hits(task, ...)
   n <- length(others)
   for (i in seq_along(others)) {
     id <- others[[i]]
