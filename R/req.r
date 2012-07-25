@@ -100,16 +100,8 @@ make_signature <- function(secret_key, operation, timestamp) {
   service <- "AWSMechanicalTurkRequester"
   
   sig_val <- str_c(service, operation, timestamp)
-  hmac_sha1(secret_key, sig_val)
+  httr:::hmac_sha1(secret_key, sig_val)
 }
-
-#' @importFrom digest hmac
-#' @importFrom RCurl base64
-hmac_sha1 <- function(key, string) {
-  hash <- hmac(key, string, "sha1", raw = TRUE)
-  base64(hash)
-}
-
 
 #' @importFrom stringr str_detect
 url_encode <- function(x) {
