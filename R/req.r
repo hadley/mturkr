@@ -13,10 +13,10 @@ mturk_req_url <- function(host = "sandbox", ...) {
     Version = "2008-08-02"
   )
   
-  params <- vapply(params, url_encode, FUN.VALUE = character(1))
-  
-  str_c("https://", host2, "/?", 
-    str_c(names(params), "=", params, collapse = "&"))
+  list(
+    url = str_c("https://", host2, "/"), 
+    params = as.list(params)
+  )
 }
 
 #' @import httr
@@ -25,7 +25,8 @@ mturk_req_url <- function(host = "sandbox", ...) {
 mturk_req <- function(host = "sandbox", operation, ...) {
   url <- mturk_req_url(host = host, Operation = operation, ...)
 
-  response <- GET(url)
+  # response <- GET(url$url, query = url$params)
+  response <- POST(url$url, body = url$params, multipart = FALSE)
   result <- text_content(response)
   
   xml <- xmlTreeParse(result)$doc$children[[1]]
