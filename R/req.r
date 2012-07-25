@@ -10,7 +10,7 @@ mturk_req_url <- function(host = "sandbox", ...) {
   
   params <- c(...,
     Service = "AWSMechanicalTurkRequester",
-    Version = "2008-08-02"
+    Version = "2012-03-25"
   )
   
   list(
