@@ -8,6 +8,7 @@ Maintainer: Hadley Wickham <h.wickham@gmail.com>
 Imports:
     XML,
     RCurl,
+    httr,
     stringr,
     digest,
     whisker,

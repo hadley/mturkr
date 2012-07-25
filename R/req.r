@@ -15,18 +15,18 @@ mturk_req_url <- function(host = "sandbox", ...) {
   
   params <- vapply(params, url_encode, FUN.VALUE = character(1))
   
-  str_c("https://", host2, "?", 
+  str_c("https://", host2, "/?", 
     str_c(names(params), "=", params, collapse = "&"))
 }
 
+#' @import httr
 #' @importFrom stringr str_wrap
 #' @importFrom XML xmlTreeParse getNodeSet
-#' @importFrom RCurl getURL
 mturk_req <- function(host = "sandbox", operation, ...) {
   url <- mturk_req_url(host = host, Operation = operation, ...)
 
-  cert <- system.file("CurlSSL/cacert.pem", package = "RCurl")
-  result <- getURL(url, cainfo = cert)
+  response <- GET(url)
+  result <- text_content(response)
   
   xml <- xmlTreeParse(result)$doc$children[[1]]
   
