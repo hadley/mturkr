@@ -17,7 +17,7 @@
 \description{
   If present, a column in the template called
   \code{max_assignments} will be used to set the maximum
-  number of assingments for each HIT.
+  number of assignments for each HIT.
 }
 \section{Required metadata}{
   \itemize{ \item \code{OverallTimeLimit}: Maximum amount

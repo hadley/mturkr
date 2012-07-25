@@ -5,9 +5,9 @@
   get_assignments(task = NULL, status, ...)
 }
 \arguments{
-  \item{status}{Which status of assignments to retrieved:
+  \item{status}{Which assignment status to retrieve:
   "approved", "rejected", or "submitted" (i.e. assignments
-  waiting approval).}
+  awaiting approval).}
 
   \item{task}{The location of an mturk task, see
   \code{\link{as.task}} for specification options}
